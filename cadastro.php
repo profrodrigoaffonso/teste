@@ -18,37 +18,22 @@ $stmt = mysqli_prepare($conn, $sql);
 /* bind parameters for markers */
 mysqli_stmt_bind_param($stmt, "ss", $cpf, $tipo_inscricao_id);
 
-//mysqli_stmt_execute($stmt);
-
-echo $cpf;
-
-$city = "Amersfoort";
-
-/* create a prepared statement */
-$stmt = mysqli_prepare($conn, "SELECT id FROM inscricoes WHERE cpf=? LIMIT 1");
-
-/* bind parameters for markers */
-mysqli_stmt_bind_param($stmt, "s", $cpf);
-
-/* execute query */
 mysqli_stmt_execute($stmt);
 
-mysqli_stmt_fetch($stmt);
+$sql = "SELECT id, tipo_inscricao_id FROM inscricoes WHERE cpf = '{$cpf}' LIMIT 1";
 
-/* bind result variables */
-mysqli_stmt_bind_result($stmt, $id);
-die($id);
+$result = mysqli_query($conn, $sql);
+
+$obj = $result->fetch_object();
+
+$id = $obj->id;
+$tipo_inscricao_id = $obj->tipo_inscricao_id;
+
+// die($id);
+
 session_start();
+
 $_SESSION['id'] = $id;
-
-die($_SESSION['id']);
-
-/* fetch value */
-mysqli_stmt_fetch($stmt);
-
-// printf("%s is in district %s\n", $city, $district);
-// die;
-
-// $id = $obj->id;
+$_SESSION['tipo_inscricao_id'] = $tipo_inscricao_id;
 
 header("Location: cadastro_endereco.php");
