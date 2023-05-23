@@ -52,6 +52,9 @@ $obj = $result->fetch_object();
 
 $msg = "Caro {$obj->nome}, sua inscrição foi confirmada.";
 
+$nome = $obj->nome;
+$email = $obj->email;
+
 $sql = "SELECT p.nome AS produto, cp.preco FROM compra_produtos AS cp
                 INNER JOIN produtos AS p ON cp.produto_id = p.id
                 WHERE cp.compra_id = {$compra_id}";
@@ -82,7 +85,33 @@ $msg .= "</tbody>
 </table>
 Total: R$ " . number_format($total, 2, ',', '.');
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
+require 'PHPMailer/src/Exception.php';
+require 'PHPMailer/src/PHPMailer.php';
+require 'PHPMailer/src/SMTP.php';
 
+// Instanciar um novo objeto PHPMailer
+$mail = new PHPMailer();
+
+// Configurar as informações do servidor SMTP
+$mail->isSMTP();
+$mail->Host = 'smtp.example.com';
+$mail->SMTPAuth = true;
+$mail->Username = 'seu_email@example.com';
+$mail->Password = 'sua_senha';
+$mail->SMTPSecure = 'tls';
+$mail->Port = 587;
+
+// Configurar as informações do remetente e destinatário
+$mail->setFrom('seu_email@example.com', 'Seu Nome');
+$mail->addAddress($email, $nome);
+
+// Configurar o assunto e o corpo do email
+$mail->Subject = 'Comprovante de inscrição';
+$mail->Body = $msg;
+
+$mail->send();
 
 header("Location: confirmada.php");

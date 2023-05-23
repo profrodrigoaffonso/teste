@@ -21,7 +21,7 @@ $result = mysqli_query($conn, $sql);
             <form method="post" action="cadastro.php">
                 <div class="mb-3">
                     <label for="cpf" class="form-label">CPF</label>
-                    <input onblur="verificaCPF()" required type="text" class="form-control" id="cpf" name="cpf">
+                    <input maxlength="11" onblur="verificaCPF()" required type="text" class="form-control" id="cpf" name="cpf">
                     <p id="msg" style="display: none;">CPF já cadastrado</p>
                 </div>
                 <div class="mb-3">
@@ -48,7 +48,7 @@ $result = mysqli_query($conn, $sql);
 
             cpf = document.getElementById('cpf').value;
 
-            console.log(cpf)
+            //console.log(cpf)
 
             xmlhttp.onreadystatechange = function() {
                 if (xmlhttp.readyState == XMLHttpRequest.DONE) { // XMLHttpRequest.DONE == 4
@@ -56,6 +56,11 @@ $result = mysqli_query($conn, $sql);
                         resp = xmlhttp.responseText;
                         if(resp == 'jacad'){
                             document.getElementById("btnCadastrar").setAttribute("disabled", "disabled")
+                            document.getElementById("msg").innerHTML = 'CPF já cadastrado'
+                            document.getElementById("msg").style.display = "block"
+                        } else if(resp == 'invalido'){
+                            document.getElementById("btnCadastrar").setAttribute("disabled", "disabled")
+                            document.getElementById("msg").innerHTML = 'CPF inválido'
                             document.getElementById("msg").style.display = "block"
                         } else {
                             document.getElementById("btnCadastrar").removeAttribute("disabled")

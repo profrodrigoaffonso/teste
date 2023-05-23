@@ -23,7 +23,6 @@ $id = $_SESSION['id'];
         <div class="container">
             <h1 class="text-center">Cadastro</h1>
             <form method="post" action="cadastro_endereco_exec.php">
-                <input type="text" name="id" value="<?php echo $id ?>">
                 <div class="mb-3">
                     <label for="cpf" class="form-label">Nome</label>
                     <input required type="text" class="form-control" maxlength="200" id="nome" name="nome">
